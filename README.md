@@ -1,6 +1,6 @@
 # Field Equipment Tracker
 
-A full stack internal tool for construction teams to track equipment across job sites. Users can view all assets and job sites, assign equipment to active sites, and return it when the job is done — with status updating in real time.
+A full stack internal tool for construction teams to track equipment across job sites. Users can view all assets and job sites, assign equipment to active sites, and return it when the job is done.
 
 Built with PostgreSQL, Express, React, and Node.js (PERN stack).
 
