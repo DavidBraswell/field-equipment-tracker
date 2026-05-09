@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AssignModal from './AssignModal';
+import AddAssetForm from './AddAssetForm';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
@@ -45,6 +46,7 @@ function AssetList() {
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Assets</h2>
+      <AddAssetForm onAssetAdded={fetchAssets}/>
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
