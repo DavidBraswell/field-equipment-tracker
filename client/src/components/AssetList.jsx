@@ -4,6 +4,7 @@ import AssignModal from './AssignModal';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
 
   const fetchAssets = () => {
@@ -12,13 +13,34 @@ function AssetList() {
         setAssets(response.data);
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching assets:', error);
+      });
+  };
+
+  const fetchAssignments = () => {
+    axios.get('/api/assignments')
+      .then(response => {
+        setAssignments(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching assignments:', error);
       });
   };
 
   useEffect(() => {
     fetchAssets();
+    fetchAssignments();
   }, []);
+
+  const handleReturn = async (assignmentId) => {
+    try {
+      await axios.patch(`/api/assignments/${assignmentId}/return`);
+      fetchAssets();
+      fetchAssignments();
+    } catch (error) {
+      console.error('Error returning asset:', error);
+    }
+  };
 
   return (
     <div>
@@ -35,28 +57,39 @@ function AssetList() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {assets.map(asset => (
-              <tr key={asset.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm font-medium text-gray-900">{asset.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{asset.category}</td>
-                <td className="px-6 py-4 text-sm text-gray-500">{asset.serial_number}</td>
-                <td className="px-6 py-4 text-sm">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${asset.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
-                    {asset.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  {asset.status === 'available' && (
-                    <button
-                      onClick={() => setSelectedAsset(asset)}
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      Assign
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {assets.map(asset => {
+              const assignment = assignments.find(a => a.asset_name === asset.name);
+              return (
+                <tr key={asset.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{asset.name}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{asset.category}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">{asset.serial_number}</td>
+                  <td className="px-6 py-4 text-sm">
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${asset.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
+                      {asset.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    {asset.status === 'available' && (
+                      <button
+                        onClick={() => setSelectedAsset(asset)}
+                        className="text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        Assign
+                      </button>
+                    )}
+                    {asset.status === 'deployed' && assignment && (
+                      <button
+                        onClick={() => handleReturn(assignment.id)}
+                        className="text-red-600 hover:text-red-800 font-medium"
+                      >
+                        Return
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -64,7 +97,10 @@ function AssetList() {
         <AssignModal
           asset={selectedAsset}
           onClose={() => setSelectedAsset(null)}
-          onAssigned={fetchAssets}
+          onAssigned={() => {
+            fetchAssets();
+            fetchAssignments();
+          }}
         />
       )}
     </div>
