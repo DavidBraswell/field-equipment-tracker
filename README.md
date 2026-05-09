@@ -8,7 +8,7 @@ Built with PostgreSQL, Express, React, and Node.js (PERN stack).
 
 I built this to prepare for an upcoming interview with a construction firm, and to gain hands-on experience with PostgreSQL and relational databases. I'd not used SQL before this project.
 
-## Preview
+## Preview of asset table
 
 ![Asset Table Preview](https://github.com/DavidBraswell/field-equipment-tracker/blob/main/blob/assetPreview.png)
 
