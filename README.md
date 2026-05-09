@@ -10,7 +10,7 @@ I built this to prepare for an upcoming interview with a construction firm, and 
 
 ## Preview
 
-![Asset Table Preview](https://github.com/DavidBraswell/field-equipment-tracker/blob/assetPreview.png)
+![Asset Table Preview]([https://github.com/DavidBraswell/field-equipment-tracker/blob/assetPreview.png](https://github.com/DavidBraswell/field-equipment-tracker/blob/main/blob/assetPreview.png))
 
 ## Features
 
