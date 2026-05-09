@@ -43,6 +43,16 @@ function AssetList() {
     }
   };
 
+  const handleDelete = async (asset) => {
+    try {
+      await axios.delete(`/api/assets/${asset.id}`);
+      fetchAssets();
+      fetchAssignments();
+    } catch (error) {
+      console.error('Error deleting asset:', error);
+    }
+  }
+
   return (
     <div>
       <h2 className="text-xl font-semibold text-gray-800 mb-4">Assets</h2>
@@ -73,13 +83,22 @@ function AssetList() {
                   </td>
                   <td className="px-6 py-4 text-sm">
                     {asset.status === 'available' && (
-                      <button
-                        onClick={() => setSelectedAsset(asset)}
-                        className="text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Assign
-                      </button>
-                    )}
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => setSelectedAsset(asset)}
+                            className="text-blue-600 hover:text-blue-800 font-medium"
+                          >
+                            Assign
+                          </button>
+                          <button
+                            onClick={() => handleDelete(asset)}
+                            className="text-red-600 hover:text-red-800 font-medium"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    
                     {asset.status === 'deployed' && assignment && (
                       <button
                         onClick={() => handleReturn(assignment.id)}
