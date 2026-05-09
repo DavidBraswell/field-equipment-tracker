@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import AssignModal from './AssignModal';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
+  const [selectedAsset, setSelectedAsset] = useState(null);
 
-  useEffect(() => {
+  const fetchAssets = () => {
     axios.get('/api/assets')
       .then(response => {
         setAssets(response.data);
@@ -12,6 +14,10 @@ function AssetList() {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+  };
+
+  useEffect(() => {
+    fetchAssets();
   }, []);
 
   return (
@@ -25,6 +31,7 @@ function AssetList() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Serial Number</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -34,15 +41,32 @@ function AssetList() {
                 <td className="px-6 py-4 text-sm text-gray-500">{asset.category}</td>
                 <td className="px-6 py-4 text-sm text-gray-500">{asset.serial_number}</td>
                 <td className="px-6 py-4 text-sm">
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${asset.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}`}>
                     {asset.status}
                   </span>
+                </td>
+                <td className="px-6 py-4 text-sm">
+                  {asset.status === 'available' && (
+                    <button
+                      onClick={() => setSelectedAsset(asset)}
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      Assign
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {selectedAsset && (
+        <AssignModal
+          asset={selectedAsset}
+          onClose={() => setSelectedAsset(null)}
+          onAssigned={fetchAssets}
+        />
+      )}
     </div>
   );
 }
