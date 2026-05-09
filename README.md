@@ -1,2 +1,47 @@
-# field-equipment-tracker
-A CRUD app using the PERN stack for keeping track of what equipment is being used at specific jobsites
+# Field Equipment Tracker
+
+A full stack internal tool for construction teams to track equipment across job sites. Users can view all assets and job sites, assign equipment to active sites, and return it when the job is done — with status updating in real time.
+
+Built with PostgreSQL, Express, React, and Node.js (PERN stack).
+
+---
+
+I built this to prepare for an upcoming interview with a construction firm, and to gain hands-on experience with PostgreSQL and relational databases. I'd not used SQL before this project.
+
+## Features
+
+- View all equipment assets and their current status (available / deployed)
+- View all active job sites
+- Assign an asset to a job site via modal
+- Return a deployed asset back to available
+- Status badges update in real time after each action
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React, Vite, Tailwind CSS |
+| Backend | Node.js, Express |
+| Database | PostgreSQL |
+| HTTP Client | Axios |
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | /assets | Fetch all assets |
+| POST | /assets | Create a new asset |
+| DELETE | /assets/:id | Delete an asset |
+| GET | /job_sites | Fetch all job sites |
+| POST | /job_sites | Create a new job site |
+| DELETE | /job_sites/:id | Delete a job site |
+| GET | /assignments | Fetch all active assignments |
+| POST | /assignments | Assign an asset to a job site |
+| PATCH | /assignments/:id/return | Return a deployed asset |
+
+---
+
