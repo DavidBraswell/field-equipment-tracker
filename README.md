@@ -18,6 +18,7 @@ I built this to prepare for an upcoming interview with a construction firm, and 
 - View all active job sites
 - Assign an asset to a job site via modal
 - Return a deployed asset back to available
+- Delete an unassigned asset from the table
 - Status badges update in real time after each action
 
 ---
